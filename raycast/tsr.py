@@ -8,6 +8,7 @@
 # Optional parameters:
 # @raycast.icon ⏰
 # @raycast.argument1 { "type": "text", "name":"tags", "placeholder": "optional tags", "optional": true }
+# @raycast.argument2 { "type": "text", "name":"group", "placeholder": "optional group", "optional": true }
 # @raycast.packageName Timestamp Recorder
 
 # Documentation:
@@ -37,19 +38,22 @@ tags = ""
 try:
   # read tags from input
   tags = sys.argv[1]
+  group = sys.argv[2]
 except IndexError:
   # no tags provided
   tags = "next"
+  group = "default"
 
 if tags == "":
   # if we're still seeing empty tags list
   tags = "next"
+  tags = "default"
 
 # ---------
 
 timestamp = str(datetime.datetime.now())
 
-output = f"\n{timestamp},{tags}"
+output = f"\n{timestamp},{tags},{group}"
 
 # make sure directories exist
 os.makedirs(os.path.dirname(FILE_PATH), exist_ok=True)

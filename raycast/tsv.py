@@ -61,12 +61,13 @@ def csv_to_timeline_entries(trows: list):
     containers = []
     for row in trows:
         
-        ts_side = get_timeline_side(row[2])
         pretty_date = row[0].strftime('%H:%M on %d %b %Y')
-
+        group = row[2]
+        ts_side = get_timeline_side(row[3])
+        
         html_container = f'<div class="container {ts_side}">\n<div class="content">\n'
         html_container += f'<h2>{row[1]}</h2>\n'
-        html_container += f'<p>{pretty_date}</p>\n'
+        html_container += f'<p>{pretty_date} {"" if group=="default" else group}</p>\n'
         html_container += '</div>\n</div>\n'
         
         containers.append(html_container)
@@ -119,8 +120,9 @@ def read_csv(filepath: str, recordtype: RecordType) -> list:
 
             raw_datetime = row[0]
             raw_data = row[1]
+            raw_group = row[2]
             parsed_datetime = datetime.datetime.fromisoformat(raw_datetime)
-            rows_buffer.append([parsed_datetime, raw_data, recordtype])
+            rows_buffer.append([parsed_datetime, raw_data, raw_group, recordtype])
     return rows_buffer
 
 def read_file_to_str(filepath):
